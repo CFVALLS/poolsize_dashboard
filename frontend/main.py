@@ -74,7 +74,7 @@ while trial < len(sample_distribution):
 
 print("mean extractions in {SIMULATIONS} simulations: {count}".format(SIMULATIONS = SIMULATIONS, count = sum(total_extractions)/SIMULATIONS))
 
-mean_extractions = sum(total_extractions)/SIMULATIONS
+mean_extractions = round(sum(total_extractions)/SIMULATIONS,0)
 
 #Plot Construction
 #figure = plt.hist(total_extractions, density=False,color ='green',alpha = 0.7)
@@ -89,6 +89,13 @@ plt.axvline(mean_extractions, color='k', linestyle='dashed', linewidth=1)
 
 st.pyplot(fig)
 
+data = {'Pool Size':[POOL_SIZE],
+        'Sample Size':[SAMPLE_SIZE],
+        'Positivity':[POSITIVITY],
+        "average extractions":[mean_extractions]}
+
+df = pd.DataFrame(data)
+st.table(df)
 
 author = "Author: Cristian Valls"
 st.header(author)
