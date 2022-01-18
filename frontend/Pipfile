@@ -1,0 +1,29 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+# black 21.7b0 and higher pull in an incompatible version of typing-extensions
+
+
+[packages]
+# IMPORTANT: We should try very hard *not* to add dependencies to Streamlit.
+# And if you do add one, make the required version as general as possible.
+altair = ">=3.2.0"
+numpy = "*"
+pandas = ">=0.21.0"
+matplot = "*"
+protobuf = ">=3.6.0, !=3.11"
+pyarrow = "*"
+pydeck = ">=0.1.dev5"
+pympler = ">=0.9"
+python-dateutil = "*"
+requests = "*"
+toml = "*"
+validators = "*"
+# Don't require watchdog on MacOS, since it'll fail without xcode tools.
+# Without watchdog, we fallback to a polling file watcher to check for app changes.
+watchdog = {version = "*", markers = "platform_system != 'Darwin'"}
+gitpython = "!=3.1.19"
+typing-extensions = { version = "*", markers = "python_version < '3.7'" }
