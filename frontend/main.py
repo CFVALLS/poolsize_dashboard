@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from numpy import random
 import matplotlib.pyplot as plt
+import SessionState
 
 ###### CONSTANTS#####
 
@@ -19,9 +20,8 @@ def check_positive(input_array):
 #############################################################################
 st.title('Distribucion de extracciones segun numero de muestras por Pool')
 
-header = "Calculo de Extracciones segun muestras por pool"
+header = "Esta webApp simula la cantidad de extracciones que se realizaran considerando una determinada cantidad de muestras por pool y una determinada positividad"
 st.header(header)
-
 
 label = "Escoger muestras por Pool"
 POOL_SIZE = st.slider(label, min_value=2, max_value=10,value=5, step=1)
@@ -32,6 +32,9 @@ SAMPLE_SIZE = st.slider(label_2, min_value=100, max_value=100000,value=5000, ste
 label_3 = "Seleccionar Positividad"
 POSITIVITY = st.slider(label_3, min_value=1.0, max_value=25.0, value=5.0,step=0.1)
 POSITIVITY = POSITIVITY/100
+
+# Execute Button
+button = st.button('Registrar')
 
 # Create populations
 
@@ -80,6 +83,8 @@ mean_extractions = round(sum(total_extractions)/SIMULATIONS,0)
 #figure = plt.hist(total_extractions, density=False,color ='green',alpha = 0.7)
 #plt.axvline(mean_extractions, color='k', linestyle='dashed', linewidth=1)
 
+header2 = "El grafico inferior muestra la cantidad de extracciones obtenidas en 250 simulaciones. Eje X corresponde a la cantidad de extracciones que se hicieron en cada Trial. Eje Y corresponde a la frecuencia correspondiente"
+st.header(header2)
 
 fig, ax = plt.subplots()
 ax.hist(total_extractions, density=False,color ='red',alpha = 0.5)
@@ -89,13 +94,35 @@ plt.axvline(mean_extractions, color='k', linestyle='dashed', linewidth=1)
 
 st.pyplot(fig)
 
-data = {'Pool Size':[POOL_SIZE],
-        'Sample Size':[SAMPLE_SIZE],
-        'Positivity':[POSITIVITY],
-        "average extractions":[mean_extractions]}
+# data = {'Pool Size':[POOL_SIZE],'Sample Size':[SAMPLE_SIZE],'Positivity':[POSITIVITY],"average extractions":[mean_extractions]}
+#
+# df = pd.DataFrame(data)
+#
+# # persist state of dataframe
+# session_state = SessionState.get(df=data)
+#
+# if button:
+#     # update dataframe state
+#     session_state.df = session_state.df.append({'Pool Size': POOL_SIZE , 'Sample Size':SAMPLE_SIZE,'Positivity':POSITIVITY,"average extractions":mean_extractions}, ignore_index=True)
+#     st.dataframe(session_state.df)
 
-df = pd.DataFrame(data)
-st.table(df)
+# Create an empty dataframe
+data = pd.DataFrame(columns=["Pool Size" , "SAMPLE_SIZE" , "POSITIVITY", "Number Of Extractions"])
+
+# with every interaction, the script runs from top to bottom
+# resulting in the empty dataframe
+# st.dataframe(data)
+
+# persist state of dataframe
+session_state = SessionState.get(df=data)
+
+if button:
+    # update dataframe state
+    session_state.df = session_state.df.append({"Pool Size": POOL_SIZE , "SAMPLE_SIZE" : SAMPLE_SIZE,"POSITIVITY" : POSITIVITY , "Number Of Extractions" : mean_extractions}, ignore_index=True)
+    st.dataframe(session_state.df)
+
+
+#st.table(df)
 
 author = "Author: Cristian Valls"
 st.header(author)
