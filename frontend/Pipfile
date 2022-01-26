@@ -20,6 +20,8 @@ pydeck = ">=0.1.dev5"
 pympler = ">=0.9"
 python-dateutil = "*"
 requests = "*"
+streamlit = "1.3.1"
+scipy = "*"
 toml = "*"
 validators = "*"
 # Don't require watchdog on MacOS, since it'll fail without xcode tools.
